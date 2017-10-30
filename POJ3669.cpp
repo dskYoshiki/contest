@@ -25,40 +25,34 @@ int solve(){
   if(meteor[0][0] == 0) return -1;
 
   //毎秒移動しなくてもよい場合
-  if (meteor[0][0] == INF){
-    //printf("0\n");
-    return 0;
-  }
+  if (meteor[0][0] == INF) return 0;
   
-  //int time = 0;
+  int time = 0;
   int cx = 0, cy = 0;
   queue<pair<int,int> > que;
-  //ここから
+  
   que.push(make_pair(0, 0));
   dist[0][0] = 0;
-  //ここ
+  
   while (!que.empty()){
     pair<int,int> cur = que.front();
-    //que.pop();
+    que.pop();
     cx = cur.first;
     cy = cur.second;
-    que.pop();
+
     if (meteor[cx][cy] == INF) {
       return dist[cx][cy];
     }
+    time = dist[cx][cy] + 1;
     if (dist[cx][cy] < meteor[cx][cy]){
       for (int j=1;j<5;j++){
           int nx = cx + dx[j];
           int ny = cy + dy[j];
-          int time = dist[cx][cy] + 1;
-          if (/*(inBoard(nx, ny)) &&*/
-              (dist[nx][ny] > time) && // まだ通っていない
+          if ((inBoard(nx, ny)) &&
+              (dist[nx][ny] == INF) && // まだ通っていない
               (time < meteor[nx][ny])) // まだ通れる
             {
-              // if (meteor[nx][ny] == INF){
-              //   //printf("%d\n", time);
-              //   return time;
-              // }
+              if (meteor[nx][ny] == INF) return time;
               dist[nx][ny] = time;
               que.push(make_pair(nx,ny));
             }
